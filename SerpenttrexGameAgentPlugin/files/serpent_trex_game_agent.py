@@ -227,11 +227,11 @@ class SerpenttrexGameAgent(GameAgent):
         }
 
     def _get_score(self, game_frame):
-        print(f"### _get_score()")
+        #print(f"### _get_score()")
         score_area_frame = serpent.cv.extract_region_from_image(game_frame.frame, self.game.screen_regions["SCORE_AREA"])
-        print("score_area_frame")
-        print(type(score_area_frame))
-        time.sleep(2)
+        #print("score_area_frame")
+        #print(type(score_area_frame))
+        #time.sleep(2)
 
         ####score_grayscale = np.array(skimage.color.rgb2gray(score_area_frame) * 255, dtype="uint8")
 
