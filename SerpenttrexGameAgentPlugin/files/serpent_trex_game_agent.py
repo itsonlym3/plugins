@@ -59,6 +59,7 @@ from serpent.machine_learning.reinforcement_learning.ddqn import DDQN
 from colorama import init, Fore, Back, Style
 import serpent.cv
 import time
+import pytesseract
 ###########################################################################
 
 class SerpenttrexGameAgent(GameAgent):
@@ -133,16 +134,20 @@ class SerpenttrexGameAgent(GameAgent):
 
         # need to try to pull score
         curr_score = self._get_score(game_frame)
+        high_score = self._get_high_score(game_frame)
+        print(f"#### curr_score: {curr_score}")
+        print(f"#### high_score: {high_score}")
+
         
         my_image = self.game.api._capture_game_over_image()
         
         # start visual debugger in another window:
         # run: serpent visual_debugger 0
-        self.visual_debugger.store_image_data(
-            my_image,
-            my_image.shape,
-            bucket="0"
-        )
+        # self.visual_debugger.store_image_data(
+        #     my_image,
+        #     my_image.shape,
+        #     bucket="0"
+        # )
         
         game_input_key = random.choice(list(self.game_inputs.keys()))
 
@@ -151,6 +156,7 @@ class SerpenttrexGameAgent(GameAgent):
         self.input_controller.handle_keys(self.game_inputs[game_input_key])
 
         self.is_alive([None, None, game_frame, None])
+
 
     def handle_random(self, game_frame):
         #print(f"## handle_random...")
@@ -226,19 +232,16 @@ class SerpenttrexGameAgent(GameAgent):
             "run_timestamp": datetime.utcnow(),
         }
 
-    def _get_score(self, game_frame):
-        #print(f"### _get_score()")
+    def _get_score(self,game_frame):
         score_area_frame = serpent.cv.extract_region_from_image(game_frame.frame, self.game.screen_regions["SCORE_AREA"])
-        #print("score_area_frame")
-        #print(type(score_area_frame))
-        #time.sleep(2)
+        score_grayscale = np.array(skimage.color.rgb2gray(score_area_frame) * 255, dtype="uint8")
 
-        ####score_grayscale = np.array(skimage.color.rgb2gray(score_area_frame) * 255, dtype="uint8")
+        score = pytesseract.image_to_string(score_grayscale, config='-psm 6')
+        return score
 
-        #tjb score = serpent.ocr.perform_ocr(image=score_grayscale, scale=10, order=1, horizontal_closing=1, vertical_closing=1)
-        ####score = serpent.ocr.perform_ocr(image=score_grayscale, scale=10, order=1, horizontal_closing=1, vertical_closing=1)
-        #print(f"### Score: {score}")
+    def _get_high_score(self,game_frame):
+        score_area_frame = serpent.cv.extract_region_from_image(game_frame.frame, self.game.screen_regions["HIGH_SCORE_AREA"])
+        score_grayscale = np.array(skimage.color.rgb2gray(score_area_frame) * 255, dtype="uint8")
 
-
-
-        pass
+        score = pytesseract.image_to_string(score_grayscale, config='-psm 6')
+        return score

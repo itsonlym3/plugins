@@ -29,7 +29,8 @@ class SerpenttrexGame(Game, metaclass=Singleton):
     def screen_regions(self):
         regions = {
             "GAME_OVER": (80, 285, 108, 317),
-            "SCORE_AREA": (28, 589, 17, 535)
+            "SCORE_AREA": (16, 534, 29, 590),
+            "HIGH_SCORE_AREA": (16, 468, 29, 524)
         }
 
         return regions
