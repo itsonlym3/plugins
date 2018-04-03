@@ -25,6 +25,12 @@ class SerpenttrexGame(Game, metaclass=Singleton):
         self.api_class = trexAPI
         self.api_instance = None
 
+        self.frame_transformation_pipeline_string = "RESIZE:600x10|GRAYSCALE"
+
+        self.frame_width = 600
+        self.frame_height = 150
+        self.frame_channels = 0
+
     @property
     def screen_regions(self):
         regions = {
