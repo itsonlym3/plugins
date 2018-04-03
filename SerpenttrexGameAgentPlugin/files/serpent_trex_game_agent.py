@@ -180,7 +180,9 @@ class SerpenttrexGameAgent(GameAgent):
                 # )
 
                 # Every 2000 steps, save latest weights to disk
-                if self.dqn_direction.current_step % 2000 == 0:
+                #if self.dqn_direction.current_step % 2000 == 0:
+                if self.dqn_direction.current_step % 200 == 0:
+                    print("### Writing Data...")
                     self.dqn_direction.save_model_weights(
                         file_path_prefix=f"datasets/trex_direction"
                     )
@@ -190,7 +192,8 @@ class SerpenttrexGameAgent(GameAgent):
                     # )
 
                 # Every 20000 steps, save weights checkpoint to disk
-                if self.dqn_direction.current_step % 20000 == 0:
+                #if self.dqn_direction.current_step % 20000 == 0:
+                if self.dqn_direction.current_step % 2000 == 0:
                     self.dqn_direction.save_model_weights(
                         file_path_prefix=f"datasets/trex_direction",
                         is_checkpoint=True
